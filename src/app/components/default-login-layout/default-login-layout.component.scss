@@ -93,3 +93,76 @@ main {
     }
 }
 
+/* Estilos para telas menores */
+@media (max-width: 968px) {
+    main {
+        flex-direction: column;
+        padding: 20px;
+
+        .main-section {
+            display: none;
+        }
+
+        .form-section {
+            flex-grow: 1;
+            padding: 20px;
+            
+            h2 {
+                font-size: 18px;
+                margin-bottom: 20px;
+            }
+
+            .btn-wrapper {
+                gap: 20px;
+
+                .divider {
+                    gap: 10px;
+                    font-size: 12px;
+
+                    div {
+                        height: 1px;
+                    }
+                }
+
+                button {
+                    font-size: 14px;
+                    padding: 10px 20px;
+                }
+            }
+        }
+    }
+}
+
+/* Estilos para telas muito pequenas */
+@media (max-width: 480px) {
+    main {
+        padding: 10px;
+
+        .form-section {
+            padding: 10px;
+
+            h2 {
+                font-size: 16px;
+                margin-bottom: 15px;
+            }
+
+            .btn-wrapper {
+                gap: 15px;
+
+                .divider {
+                    gap: 5px;
+                    font-size: 10px;
+
+                    div {
+                        height: 1px;
+                    }
+                }
+
+                button {
+                    font-size: 12px;
+                    padding: 8px 16px;
+                }
+            }
+        }
+    }
+}

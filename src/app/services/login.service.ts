@@ -1,7 +1,7 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { LoginResponse } from '../types/login-response.type';
-import { tap, catchError } from 'rxjs';
+import { tap, catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 
 @Injectable({
@@ -9,16 +9,24 @@ import { throwError } from 'rxjs';
 })
 export class LoginService {
 
-  private baseUrl = 'http://localhost:3001'; // URL do seu backend Nest.js na porta 3001
+  private baseUrl = 'http://localhost:3005'; // URL do seu backend Nest.js na porta 3001
 
   constructor(private httpClient: HttpClient) { }
 
-  login(name: string, password: string){
-    return this.httpClient.post<LoginResponse>("/login", {name, password}).pipe(
-      tap((value) => {//tap torna o valor sincrono
-        sessionStorage.setItem("auth-token", value.token)
-        sessionStorage.setItem("username", value.name)
+  login(email: string, password: string) {
+    return this.httpClient.post<LoginResponse>(`${this.baseUrl}/auth/login`, { email, password }).pipe(
+      catchError((error: HttpErrorResponse) => {
+        let errorMessage = 'Unknown error during login';
+        if (error.error instanceof ErrorEvent) {
+          // Erro de rede ou cliente
+          errorMessage = `${error.error.message}`;
+        } else {
+          // Erro no servidor
+          errorMessage = `${error.error.message}`;
+        }
+        console.error(errorMessage);
+        return throwError(() => new Error(errorMessage));      
       })
-    )
+    );
   }
 }

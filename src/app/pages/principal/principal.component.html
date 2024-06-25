@@ -1,7 +1,12 @@
 <main>
     <div class="nav">
         <h2>Hello!</h2>
-        <mat-icon aria-hidden="false" aria-label="Logout icon" fontIcon="logout"></mat-icon>
+        <mat-icon 
+            aria-hidden="false" 
+            aria-label="Logout icon" 
+            fontIcon="logout" 
+            (click)="navigate()"
+        ></mat-icon>
     </div>
     <div class="tasks">
         <h1>Your tasks</h1>

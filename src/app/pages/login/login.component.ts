@@ -26,7 +26,7 @@ interface LoginForm {
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
-  loginForm!: FormGroup<LoginForm>;
+  loginForm!: FormGroup;
 
   constructor(
     private router: Router,
@@ -39,14 +39,26 @@ export class LoginComponent {
     })
   }
 
-  submit(){
-    this.loginService.login(this.loginForm.value.email, this.loginForm.value.password).subscribe({
-      next: () => this.toastService.success("Login successfully!"),
-      error: () => this.toastService.error("Woops, something is wrong, try again later!")
-    })
+  submit() {
+    if (this.loginForm.valid) {
+      const { email, password } = this.loginForm.value;
+
+      this.loginService.login(email, password).subscribe({
+        next: () => {
+          this.toastService.success("Login successfully!");
+          this.router.navigate(['principal']);
+        },
+        error: (errorMessage) => {
+          console.error('Error during login:', errorMessage);
+          this.toastService.error(errorMessage);
+        }
+      });
+    } else {
+      this.toastService.error("Please fill in all required fields correctly.");
+    }
   }
 
-  navigate(){
-    this.router.navigate(["signup"])
+  navigate() {
+    this.router.navigate(['signup']);
   }
 }

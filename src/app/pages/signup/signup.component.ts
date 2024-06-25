@@ -5,6 +5,7 @@ import { PrimaryInputComponent } from '../../components/primary-input/primary-in
 import { Router } from '@angular/router';
 import { LoginService } from '../../services/login.service';
 import { ToastrService } from 'ngx-toastr';
+import { SignupService } from '../../services/signup.service';
 
 interface SignupForm {
   name: FormControl,
@@ -32,7 +33,7 @@ export class SignUpComponent {
 
   constructor(
     private router: Router,
-    private loginService: LoginService,
+    private signupService: SignupService,
     private toastService: ToastrService
   ){
     this.signupForm = new FormGroup({
@@ -44,13 +45,24 @@ export class SignUpComponent {
   }
 
   submit(){
-    this.loginService.login(this.signupForm.value.email, this.signupForm.value.password).subscribe({
-      next: () => this.toastService.success("Login successfully!"),
-      error: () => this.toastService.error("Woops, something is wrong, try again later!")
-    })
+    if (this.signupForm.valid) {
+      const { name, email, password } = this.signupForm.value;
+      this.signupService.register(name, email, password).subscribe({
+        next: () => {
+          this.toastService.success("Cadastro realizado com sucesso!");
+          this.router.navigate(["login"]);
+        },
+        error: (error) => {
+          console.error('Erro durante o cadastro:', error);
+          this.toastService.error("Falha ao cadastrar usuário. Por favor, tente novamente mais tarde.");
+        }
+      });
+    } else {
+      this.toastService.error("Por favor, preencha todos os campos corretamente.");
+    }
   }
 
   navigate(){
-    this.router.navigate(["login"])
+    this.router.navigate(["login"]);
   }
 }

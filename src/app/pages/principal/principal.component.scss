@@ -6,6 +6,10 @@ main {
     .nav {
         display: flex;
         justify-content: space-between;
+
+        .mat-icon {
+            cursor: pointer;
+        }
     }
 
     .tasks {
